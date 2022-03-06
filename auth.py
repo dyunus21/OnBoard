@@ -5,10 +5,11 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flaskr.db import get_db
+from user_db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
+# Routes to register page
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
@@ -38,7 +39,7 @@ def register():
 
     return render_template('auth/register.html')
 
-
+# Routes to login page
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
@@ -51,14 +52,14 @@ def login():
         ).fetchone()
 
         if user is None:
-            error = 'Incorrect username.'
+            error = 'Username does not exist'
         elif not check_password_hash(user['password'], password):
             error = 'Incorrect password.'
 
         if error is None:
             session.clear()
             session['user_id'] = user['id']
-            return redirect(url_for('hello'))
+            return redirect(url_for('purchase_tickets'))
 
         flash(error)
 
@@ -75,10 +76,11 @@ def load_logged_in_user():
             'SELECT * FROM user WHERE id = ?', (user_id,)
         ).fetchone()
 
+# Routes to logout
 @bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('auth.register'))
+    return redirect(url_for('auth.login'))
 
 def login_required(view):
     @functools.wraps(view)

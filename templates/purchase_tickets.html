@@ -10,10 +10,12 @@
 
     <title>Tickets Database</title>
   </head>
+  <span> Hi {{ g.user['username'] }}, </span>
+  <span> choose your tickets below! </span>
   <body>
-
+    
     <h1>Purchase Tickets</h1>
-
+    
     <table class = "table table-hover table-light">
         <thead>
             <tr>
@@ -51,7 +53,9 @@
         </tbody>
     </table>
 
-    
+    <ul>
+      <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+    </ul>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
   </body>

@@ -1,12 +1,14 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - Flaskr</title>
+<title> OnBoard</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <nav>
-  <h1>Flaskr</h1>
+  <h1>OnBoard</h1>
   <ul>
+    <!-- if user is logged in, only shows log out option -->
     {% if g.user %}
       <li><span>{{ g.user['username'] }}</span>
       <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+    <!-- else shows register and login option -->
     {% else %}
       <li><a href="{{ url_for('auth.register') }}">Register</a>
       <li><a href="{{ url_for('auth.login') }}">Log In</a>
