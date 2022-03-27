@@ -92,6 +92,16 @@ def account_login():
                 return redirect(url_for('business_dashboard'))
     return render_template('account_login.html', form = form)
 
+# Routes to forgot password
+@app.route('/forgot_password')
+def forgot_password():
+    return render_template('forgot.html')
+
+# Routes to reset password
+@app.route('/reset')
+def reset():
+    return render_template('reset.html')
+
 # Routes to ticket page
 @app.route('/tickets', methods = ['GET', 'POST'])
 def purchase_tickets():
