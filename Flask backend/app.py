@@ -1,9 +1,9 @@
 import os
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request,flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, RadioField, SubmitField
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user,logout_user, login_required
 
 # Configure app and SQL Alchemy
 app = Flask(__name__)
@@ -69,6 +69,10 @@ def account_registration():
     form = RegisterAccount()
     if form.validate_on_submit():
         u_curr = User(username = form.username.data, emailAddress = form.emailadd.data, passwordHash = form.password.data, userType = form.typeofuser.data)
+        # If user already has an account
+        if db.session.query(db.exists().where(User.username == u_curr.username)).scalar():
+            flash('User is already registered')
+            render_template('account_registration.html', form = form)
         db.session.add(u_curr)
         db.session.commit()
         if(u_curr.userType==0):
@@ -85,12 +89,26 @@ def account_login():
     if form.validate_on_submit():
         u_attempt = User.query.filter_by(username = form.username.data).first()
         curr_points = u_attempt.points
+        
+        # if username and password is correct
         if u_attempt and form.password.data == u_attempt.passwordHash:
+            login_user(u_attempt)
             if(u_attempt.userType==0):
                 return redirect(url_for('purchase_tickets', points = curr_points))
             else:
                 return redirect(url_for('business_dashboard'))
+
+        # Error messages
+        else:
+            flash('Invalid Username or Password!')
     return render_template('account_login.html', form = form)
+
+# logs out user
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('account_login'))
 
 # Routes to forgot password
 @app.route('/forgot_password')
@@ -130,9 +148,9 @@ def business_dashboard():
 def user_dashboard():
     return render_template('user_dashboard.html')
 
-# Imports content from authentication and 
-import auth
-app.register_blueprint(auth.bp)
+# # Imports content from authentication and 
+# import auth
+# app.register_blueprint(auth.bp)
   
-import user_db
-user_db.init_app(app)
+# import user_db
+# user_db.init_app(app)
