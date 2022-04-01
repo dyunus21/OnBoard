@@ -191,6 +191,11 @@ ul ol {
   margin-bottom: 0;
 }
 
+/* can hover over dropdown menu */
+ul li:hover > ul{
+  display: block;
+}
+
 dt {
   font-weight: 700;
 }

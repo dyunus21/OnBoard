@@ -24,7 +24,7 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="home_page.html">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item dropdown">
+                        <!-- <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="#!">All Products</a></li>
@@ -32,7 +32,7 @@
                                 <li><a class="dropdown-item" href="#!">Popular Items</a></li>
                                 <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
                             </ul>
-                        </li>
+                        </li> -->
                     </ul>
                     <form class="d-flex">
                         <!-- HREF ONLY WORKS WHEN TYPE="BUTTON", NOT "SUBMIT" -->
@@ -51,19 +51,52 @@
                         <!-- <div class="navbar navbar-expand-lg navbar-light bg-light">
                             <a href="../login_page/login-page.html">Log out</a>
                         </div> -->
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                             <li class="nav-item"><a class="nav-link active" aria-current="page" href="../login_page/login-page.html">Log in</a></li>
                             </li>
-                        </ul>
+                        </ul> -->
                     </form>
+                    <!--user profile window-->
+                    <div class = "d-flex">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="./img/blank-profile-picture-g02adda42f_640.png" alt="" width="35px" height="35px"></a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-size: 15px;">
+                                    <!-- <li><a class="dropdown-item" href="#!">Your Username</a></li> -->
+                                    <p style="padding-left: 15px;">Your Username</p>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" href="#!">Settings</a></li>
+                                    <li><a class="dropdown-item" href="../login_page/login-page.html">Log out</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- <ul>
+                        <nav class="navbar navbar-expand-lg navbar-light">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="./assets/blank-profile-picture-g02adda42f_640.png" alt="" width="35px" height="35px"></a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-size: 15px;">
+                                        <li><a class="dropdown-item" href="#!">Your Username</a></li>
+                                        <li><hr class="dropdown-divider" /></li>
+                                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                                        <li><a class="dropdown-item" href="../login_page/login-page.html">Log out</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </ul> -->
                 </div>
             </div>
         </nav>
         <!-- Header-->
         <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
+            <!-- <div class="container px-4 px-lg-5 my-5"> -->
+            <div class="container">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">OnBoard</h1>
+                    <!-- <h1 class="display-4 fw-bolder">OnBoard</h1> -->
+                    <h1 class="display-4">OnBoard</h1>
                     <p class="lead fw-normal text-white-50 mb-0">Travel made affordable, convenient, and memorable.  </p>
                 </div>
             </div>
@@ -71,10 +104,10 @@
         <!-- Section-->
         <section class="py-5">
             <!--added drop down menu for ticket locations-->
-            <nav class="navbar navbar-expand-lg navbar-light ">
+            <nav class="navbar navbar-expand-lg navbar-light">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding-left: 90px; font-size: 20px">Locations</a>
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 20px">Locations</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#!">All Locations</a></li>
                             <li><hr class="dropdown-divider" /></li>
@@ -89,9 +122,10 @@
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                     <div class="col mb-5">
+                        <!-- <div class="card h-100"> -->
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -108,11 +142,12 @@
                         </div>
                     </div>
                     <div class="col mb-5">
+                        <!-- <div class="card h-100"> -->
                         <div class="card h-100">
                             <!-- Sale badge-->
                             <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                             <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -138,11 +173,12 @@
                         </div>
                     </div>
                     <div class="col mb-5">
+                        <!-- <div class="card h-100"> -->
                         <div class="card h-100">
                             <!-- Sale badge-->
                             <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                             <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -162,7 +198,7 @@
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -191,7 +227,7 @@
                             <!-- Sale badge-->
                             <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                             <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -211,7 +247,7 @@
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -232,7 +268,7 @@
                             <!-- Sale badge-->
                             <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                             <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -260,7 +296,7 @@
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
@@ -288,7 +324,7 @@
             </div>
         </section>
         <!-- Footer-->
-        <footer class="py-5 bg-dark">
+        <footer class="py-3 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; OnBoard 2022</p></div>
         </footer>
         <!-- Bootstrap core JS-->
