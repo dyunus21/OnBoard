@@ -39,7 +39,7 @@
                               <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="static/blank-profile-picture-g02adda42f_640.png" alt="" width="35px" height="35px"></a>
                               <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-size: 15px;">
                                   <!-- <li><a class="dropdown-item" href="#!">Your Username</a></li> -->
-                                  <p style="padding-left: 15px;">{{user.username}}</p>
+                                  <p style="padding-left: 15px;">usernaem</p>
                                   <li><hr class="dropdown-divider" /></li>
                                   <li><a class="dropdown-item" href="#!">Settings</a></li>
                                   <li><a class="dropdown-item" href="{{url_for('account_login')}}">Log out</a></li>
@@ -68,21 +68,21 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                {% for ticket in user.tickets %}
+                                {% for ticket in tickets %}
                                 <tr>
                                   <th scope="row">
                                     <div class="d-flex align-items-center">
                                       <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="img-fluid rounded-3" style="width: 120px;" alt="Book">
                                       <div class="flex-column ms-4">
                                         <p class="mb-2">Charter Bus Ticket</p>
-                                        <p class="mb-0" style="font-weight: 1000;">Location: {{tickets.Destination}} </p>
-                                        <p class="mb-0" style="font-weight: 1000;">Time of Departure (from Champaign):{{tickets.StartTime}} </p>
-                                        <p class="mb-0" style="font-weight: 1000;">Time of Arrival: {{tickets.ArrivalTime}} </p>
+                                        <p class="mb-0" style="font-weight: 1000;">Location: {{ticket.Destination}} </p>
+                                        <p class="mb-0" style="font-weight: 1000;">Time of Departure (from Champaign):{{ticket.StartTime}} </p>
+                                        <p class="mb-0" style="font-weight: 1000;">Time of Arrival: {{ticket.ArrivalTime}} </p>
                                       </div>
                                     </div>
                                   </th>
                                   <td class="align-middle">
-                                    <p class="mb-0" style="font-weight: 500;">k</p>
+                                    <p class="mb-0" style="font-weight: 500;">{{ticket.TransportCompany}}</p>
                                   </td>
                                   <td class="align-middle">
                                     <div class="d-flex flex-row">
@@ -101,7 +101,7 @@
                                     </div>
                                   </td>
                                   <td class="align-middle">
-                                    <p class="mb-0" style="font-weight: 500;">{{tickets.Price}}</p>
+                                    <p class="mb-0" style="font-weight: 500;">{{ticket.Price}}</p>
                                   </td>
                                 </tr>
                                 {% endfor %}
@@ -203,7 +203,7 @@
                             <div class="col-lg-4 col-xl-3">
                               <div class="d-flex justify-content-between" style="font-weight: 500;">
                                 <p class="mb-2">Subtotal</p>
-                                <p class="mb-2">$23.49</p>
+                                <p class="mb-2">${{sum}}</p>
                               </div>
               
                               <div class="d-flex justify-content-between" style="font-weight: 500;">
@@ -215,7 +215,7 @@
               
                               <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
                                 <p class="mb-2">Total (tax included)</p>
-                                <p class="mb-2">$26.48</p>
+                                <p class="mb-2">$64.99</p>
                               </div>
               
                               <button type="button" class="btn btn-primary btn-block btn-lg">

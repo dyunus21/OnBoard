@@ -3,6 +3,7 @@ import uuid
 from flask import Flask, render_template, redirect, url_for, request,flash,g
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import exc
+from sqlalchemy.sql import func
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, RadioField, SubmitField, IntegerField, FloatField, EmailField
 from flask_login import LoginManager, login_user,logout_user, login_required,current_user
@@ -80,7 +81,7 @@ class LoginAccount(FlaskForm):
     submitted = SubmitField(label = 'Submit')
 
 class addPoints(FlaskForm):
-    submitted = SubmitField(label = 'View Details')
+    submitted = SubmitField(label = 'Purchase')
 
 class AddDiscount(FlaskForm):
     business = StringField(label = 'Name of Business')
@@ -223,7 +224,12 @@ def user_dashboard():
 # Routes to checkout page
 @app.route('/checkout')
 def checkout():
-    return render_template('checkout_page.html',user = current_user)
+    tickets = Ticket.query.all()
+    sum =0
+    for ticket in tickets:
+        sum +=ticket.Price
+    # sum = db.session.query(func.max(Ticket.Price).label("max_score"))
+    return render_template('checkout_page.html',tickets = tickets, sum = sum)
 
 # Routes to local business dashboard
 @app.route('/business_dashboard', methods = ['GET', 'POST'])
