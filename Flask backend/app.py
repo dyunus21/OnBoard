@@ -1,9 +1,15 @@
 import os
-from flask import Flask, render_template, redirect, url_for, request,flash
+import uuid
+from flask import Flask, render_template, redirect, url_for, request,flash,g
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import exc
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, RadioField, SubmitField, IntegerField, FloatField
-from flask_login import LoginManager, login_user,logout_user, login_required
+from wtforms import StringField, PasswordField, RadioField, SubmitField, IntegerField, FloatField, EmailField
+from flask_login import LoginManager, login_user,logout_user, login_required,current_user
+from wtforms.validators import DataRequired, Email
+from flask_mail import Mail, Message
+# import flask_UUID
+from flask_uuid import FlaskUUID
 
 # Configure app and SQL Alchemy
 app = Flask(__name__)
@@ -14,13 +20,25 @@ app.config.from_mapping(
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ticketsdatabase.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'aiuhewr9y9q2392304iuahi3'
-db = SQLAlchemy(app)
+#Email related Configuration values
+app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'email@gmail.com'
+app.config['MAIL_PASSWORD'] = 'password'
+app.config['MAIL_DEFAULT_SENDER'] = 'email@gmail.com'
 
+# login_manager = LoginManager(app)
+
+db = SQLAlchemy(app)
+mail = Mail(app)
+FlaskUUID(app)
 # #User Creation Class
 class User(db.Model):
     __tablename__ = "user"
     id = db.Column(db.Integer(), primary_key = True)
-    username = db.Column(db.String(), nullable = False)
+    username = db.Column(db.String(), nullable = False, unique = True)
     emailAddress = db.Column(db.String(), nullable = False)
     passwordHash = db.Column(db.String(), nullable = False)
     points = db.Column(db.Integer(), nullable = False, default = 0)
@@ -71,6 +89,12 @@ class AddDiscount(FlaskForm):
     minpoints = IntegerField(label = 'Minimum Number of Points Necessary')
     submitted = SubmitField(label = 'Submit')
 
+class ForgotForm(FlaskForm):
+    email = EmailField('Email address', [DataRequired(),Email()])
+    submitted = SubmitField(label = 'Submit')
+
+# class ResetForm(FlaskForm):
+#     current_password = PasswordField('Current Password')
 # Routes to home page
 @app.route('/')
 def home():
@@ -85,17 +109,17 @@ def account_registration():
     form = RegisterAccount()
     if form.validate_on_submit():
         u_curr = User(username = form.username.data, emailAddress = form.emailadd.data, passwordHash = form.password.data, userType = form.typeofuser.data)
-         # If user already has an account
-        if db.session.query(db.exists().where(User.username == u_curr.username)).scalar():
-            flash('User is already registered')
-            render_template('account_registration.html', form = form)
-        db.session.add(u_curr)
-        db.session.commit()
-        curr_points = 0
-        if(u_curr.userType==0):
-            return redirect(url_for('purchase_tickets', points = curr_points))
-        else:
-            return redirect(url_for('business_dashboard'))       
+        try:
+            db.session.add(u_curr)
+            db.session.commit()
+            curr_points = 0
+            if(u_curr.userType==0):
+                return redirect(url_for('purchase_tickets', points = curr_points))
+            else:
+                return redirect(url_for('business_dashboard'))       
+        except exc.IntegrityError:
+            db.session.rollback()
+            flash('ERROR! User ({}) already exists.'.format(form.username.data), 'error')
     return render_template('account_registration.html', form = form)
 
 # Routes to account login page
@@ -108,7 +132,7 @@ def account_login():
         curr_points = u_attempt.points
          # if username and password is correct
         if u_attempt and form.password.data == u_attempt.passwordHash:
-            login_user(u_attempt)
+            # login_user(u_attempt)
             if(u_attempt.userType==0):
                 return redirect(url_for('purchase_tickets', points = curr_points))
             else:
@@ -126,9 +150,24 @@ def logout():
     return redirect(url_for('account_login'))
 
 # Routes to forgot password
-@app.route('/forgot_password')
+@app.route('/forgot_password', methods = ('GET','POST'))
 def forgot_password():
-    return render_template('forgot.html')
+    form = ForgotForm()
+    if form.validate_on_submit():
+        user = User.objects.filter(email = form.email.data).first()
+        if user:
+            code = str(uuid.uuid4())
+            user.change_configuration = {
+                "password_reset_code" : code
+            }
+            user.save()
+
+            body_html= render_template('password_reset.html',user = user)
+            body_text = render_template('password_reset.txt',user = user)
+            mail.send(user.email,"Password reset request", body_html,body_text)
+
+    message = "You will receive password reset link soon."
+    return render_template('forgot.html',form = form,error = None)
 
 # Routes to reset password
 @app.route('/reset')
@@ -156,6 +195,12 @@ def purchase_tickets():
 @app.route('/user_dashboard')
 def user_dashboard():
     return render_template('user_dashboard.html')
+
+# Routes to checkout page
+@app.route('/checkout')
+def checkout():
+    g.user = current_user.username
+    return render_template('checkout_page.html',user = g.user)
 
 # Routes to local business dashboard
 @app.route('/business_dashboard', methods = ['GET', 'POST'])
