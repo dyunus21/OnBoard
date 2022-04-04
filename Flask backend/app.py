@@ -80,7 +80,7 @@ class LoginAccount(FlaskForm):
     submitted = SubmitField(label = 'Submit')
 
 class addPoints(FlaskForm):
-    submitted = SubmitField(label = 'Confirm Purchase')
+    submitted = SubmitField(label = 'View Details')
 
 class AddDiscount(FlaskForm):
     business = StringField(label = 'Name of Business')
@@ -190,6 +190,30 @@ def purchase_tickets():
             return redirect(url_for('purchase_tickets', tickets = tickets, points = curr_points))
     tickets = Ticket.query.all()
     return render_template('purchase_tickets.html', tickets = tickets, points = curr_points, confirm_purchase = confirm_purchase)
+
+
+curr_ticket = ""
+@app.route('/display_tickets', methods = ['GET', 'POST'])
+def display_tickets():
+    global curr_points
+    confirm_purchase = addPoints()
+    if request.method == 'POST':
+        ticket_chosen = request.form.get('confirm_purchase')
+        global curr_ticket 
+        curr_ticket= Ticket.query.filter_by(TicketID = ticket_chosen).first()
+        if curr_ticket:
+            curr_points += 5
+            curr_ticket.NumberOfPurchasedTickets += 1
+            db.session.commit()
+            tickets = Ticket.query.all()
+            return redirect(url_for('item_view', ticket = curr_ticket))
+    tickets = Ticket.query.all()
+    return render_template('display_tickets.html', tickets = tickets, confirm_purchase = confirm_purchase)
+
+@app.route('/item_view')
+def item_view():
+    ticket = curr_ticket
+    return render_template('itemview.html', ticket = ticket)
 
 # Routes to user dashboard page
 @app.route('/user_dashboard')
