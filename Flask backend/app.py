@@ -81,7 +81,7 @@ class LoginAccount(FlaskForm):
     submitted = SubmitField(label = 'Submit')
 
 class addPoints(FlaskForm):
-    submitted = SubmitField(label = 'Purchase')
+    submitted = SubmitField(label = 'View Details')
 
 class AddDiscount(FlaskForm):
     business = StringField(label = 'Name of Business')
@@ -167,7 +167,7 @@ def forgot_password():
             body_text = render_template('password_reset.txt',user = user)
             mail.send(user.email,"Password reset request", body_html,body_text)
 
-    message = "You will receive password reset link soon."
+    message = "You will receive a password reset link soon."
     return render_template('forgot.html',form = form,error = None)
 
 # Routes to reset password
@@ -226,10 +226,12 @@ def user_dashboard():
 def checkout():
     tickets = Ticket.query.all()
     sum =0
+    count = 0
     for ticket in tickets:
         sum +=ticket.Price
+        count+=1
     # sum = db.session.query(func.max(Ticket.Price).label("max_score"))
-    return render_template('checkout_page.html',tickets = tickets, sum = sum)
+    return render_template('checkout_page.html',tickets = tickets, sum = sum, count = count)
 
 # Routes to local business dashboard
 @app.route('/business_dashboard', methods = ['GET', 'POST'])
