@@ -199,8 +199,7 @@ def user_dashboard():
 # Routes to checkout page
 @app.route('/checkout')
 def checkout():
-    g.user = current_user.username
-    return render_template('checkout_page.html',user = g.user)
+    return render_template('checkout_page.html',user = current_user)
 
 # Routes to local business dashboard
 @app.route('/business_dashboard', methods = ['GET', 'POST'])
