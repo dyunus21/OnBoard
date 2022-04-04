@@ -68,16 +68,16 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                {% for ticket in tickets %}
+                                {% for ticket in user.tickets %}
                                 <tr>
                                   <th scope="row">
                                     <div class="d-flex align-items-center">
                                       <img src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" class="img-fluid rounded-3" style="width: 120px;" alt="Book">
                                       <div class="flex-column ms-4">
                                         <p class="mb-2">Charter Bus Ticket</p>
-                                        <p class="mb-0" style="font-weight: 1000;">Location: {{user.tickets.Destination}} </p>
-                                        <p class="mb-0" style="font-weight: 1000;">Time of Departure (from Champaign):{{user.tickets.StartTime}} </p>
-                                        <p class="mb-0" style="font-weight: 1000;">Time of Arrival: {{user.tickets.ArrivalTime}} </p>
+                                        <p class="mb-0" style="font-weight: 1000;">Location: {{tickets.Destination}} </p>
+                                        <p class="mb-0" style="font-weight: 1000;">Time of Departure (from Champaign):{{tickets.StartTime}} </p>
+                                        <p class="mb-0" style="font-weight: 1000;">Time of Arrival: {{tickets.ArrivalTime}} </p>
                                       </div>
                                     </div>
                                   </th>
@@ -101,7 +101,7 @@
                                     </div>
                                   </td>
                                   <td class="align-middle">
-                                    <p class="mb-0" style="font-weight: 500;">78</p>
+                                    <p class="mb-0" style="font-weight: 500;">{{tickets.Price}}</p>
                                   </td>
                                 </tr>
                                 {% endfor %}
