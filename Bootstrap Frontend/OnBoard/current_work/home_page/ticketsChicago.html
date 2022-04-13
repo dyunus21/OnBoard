@@ -116,77 +116,196 @@
         <div class="container">
             <div class="text-center text-white">
                 <!-- <h1 class="display-4 fw-bolder">OnBoard</h1> -->
-                <h1 class="display-4">OnBoard</h1>
+                <h1 class="display-4">Select Your Ticket</h1>
                 <p class="lead fw-normal text-white-50 mb-0">Travel made affordable, convenient, and memorable. </p>
             </div>
         </div>
     </header>
     <!-- Section-->
     <section class="py-5">
-        <!--added drop down menu for ticket locations-->
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <ul class="navbar-nav me-auto mb-6 mb-lg-7 ms-lg-5">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 20px">Locations</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-                        <li><a class="dropdown-item" href="ticketsChicago.html">Chicago</a></li>
-                        <li><a class="dropdown-item" href="ticketsBloom.html">Bloomington</a></li>
-                        <li><a class="dropdown-item" href="ticketsOakbrook.html">Oakbrook</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-        <div class="container px-4 px-lg-8 mt-5">
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-3 justify-content-center">
+        <section class="container">
+            <form>
+                <div class="row form-group">
+                    <label for="date" class="col-sm-9 col-form-label"></label>
+                    <div class="col-sm-3">
+                        <div class="input-group date" id="datepicker">
+                            <input type="text" class="form-control">
+                            <span class="input-group-append">
+                                <span class="input-group-text bg-white">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <script type="text/javascript">
+            $(function () {
+                $('#datepicker').datepicker();
+            });
+        </script>
+
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 <div class="col mb-5">
-                    <!-- <div class="card h-100"> -->     
+                    <!-- <div class="card h-100"> -->
                     <div class="card h-100">
                         <!-- Product image-->
                         <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
                         <!-- Product details-->
                         <div class="card-body p-4">
-                            <img src="chicago.jpeg" alt="Flowers in Chania" width="290" height="225">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">Peoria Charter</h5>
+                                <!-- Product price-->
+                                $40.00 
+                            </div>
+                            <div class="text-center">
+                                <!-- Product time-->
+                                6:45 AM
+                            </div>
                         </div>
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                    href="ticketsChicago.html">to Chicago</a></div>
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="view_item.html">View
+                                    details</a></div>
                         </div>
                     </div>
                 </div>
                 <div class="col mb-5">
-                    <!-- <div class="card h-100"> -->     
+                    <!-- <div class="card h-100"> -->
                     <div class="card h-100">
+                        <!-- Sale badge-->
+                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale
+                        </div>
                         <!-- Product image-->
                         <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
                         <!-- Product details-->
                         <div class="card-body p-4">
-                            <img src="bloomington.jpeg" alt="Flowers in Chania" width="290" height="225">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">Amtrack</h5>
+                    
+                                <!-- Product price-->
+                                <span class="text-muted text-decoration-line-through">$20.00</span>
+                                $38.00
+                            </div>
+                            <div class="text-center">
+                                <!-- Product time-->
+                                8:30 AM
+                            </div>
                         </div>
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                    href="ticketsBloom.html">to Bloomington</a></div>
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="view_item.html">View
+                                    details</a></div>
                         </div>
                     </div>
                 </div>
                 <div class="col mb-5">
-                    <!-- <div class="card h-100"> -->     
+                    <!-- <div class="card h-100"> -->
+                    <div class="card h-100">
+                        <!-- Sale badge-->
+                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale
+                        </div>
+                        <!-- Product image-->
+                        <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">Greyhound</h5>
+                                <!-- Product price-->
+                                <span class="text-muted text-decoration-line-through">$50.00</span>
+                                $25.00
+                            </div>
+                            <div class="text-center">
+                                <!-- Product time-->
+                                11:00 AM
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="view_item.html">View
+                                    details</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
                     <div class="card h-100">
                         <!-- Product image-->
                         <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
                         <!-- Product details-->
                         <div class="card-body p-4">
-                            <img src="oakbrook.jpeg" alt="Flowers in Chania" width="290" height="225">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">Peoria Charter</h5>
+                                <!-- Product price-->
+                                $45.00
+                            </div>
+                            <div class="text-center">
+                                <!-- Product time-->
+                                1:45 PM
+                            </div>
                         </div>
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                    href="ticketsOakbrook.html">to Oakbrook</a></div>
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="view_item.html">View
+                                    details</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Sale badge-->
+                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale
+                        </div>
+                        <!-- Product image-->
+                        <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">Greyhound</h5>
+                                <!-- Product price-->
+                                <span class="text-muted text-decoration-line-through">$50.00</span>
+                                $45.00
+                            </div>
+                            <div class="text-center">
+                                <!-- Product time-->
+                                3:00 PM
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="view_item.html">View
+                                    details</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">Amtrack</h5>
+                                <!-- Product price-->
+                                $14.00
+                            </div>
+                            <div class="text-center">
+                                <!-- Product time-->
+                                6:00 PM
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="view_item.html">View
+                                    details</a></div>
                         </div>
                     </div>
                 </div>
