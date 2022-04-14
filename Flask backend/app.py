@@ -7,10 +7,15 @@ from sqlalchemy.sql import func
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, RadioField, SubmitField, IntegerField, FloatField, EmailField
 from flask_login import LoginManager, login_user,logout_user, login_required,current_user
-from wtforms.validators import DataRequired, Email
+from wtforms.validators import DataRequired, Email, ValidationError, EqualTo
 from flask_mail import Mail, Message
+from flask_bcrypt import Bcrypt
 # import flask_UUID
 from flask_uuid import FlaskUUID
+
+# from datetime import datetime
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+# from flask_login import UserMixin
 
 # Configure app and SQL Alchemy
 app = Flask(__name__)
@@ -22,18 +27,21 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ticketsdatabase.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'aiuhewr9y9q2392304iuahi3'
 #Email related Configuration values
-app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+mail= Mail(app)
+
+app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = '*****REPLACE WITH EMAIL ADDRESS******'
+app.config['MAIL_PASSWORD'] = '*****REPLACE WITH APP PASSWORD********'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'email@gmail.com'
-app.config['MAIL_PASSWORD'] = 'password'
-app.config['MAIL_DEFAULT_SENDER'] = 'email@gmail.com'
-
-# login_manager = LoginManager(app)
+mail = Mail(app)
+# login_manager = LoginManager(app) 
 
 db = SQLAlchemy(app)
-mail = Mail(app)
+bcrypt = Bcrypt(app)
+
+
 FlaskUUID(app)
 # #User Creation Class
 class User(db.Model):
@@ -45,6 +53,23 @@ class User(db.Model):
     points = db.Column(db.Integer(), nullable = False, default = 0)
     userType = db.Column(db.Integer(), nullable = False)
     tickets = db.relationship('Ticket', backref="user", lazy = True)
+
+    def get_reset_token(self, expires_sec=1800):
+        s = Serializer(app.config['SECRET_KEY'], expires_sec)
+        return s.dumps({'user_id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
+
+    def __repr__(self):
+        return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+
 
 # Ticket Class
 class Ticket(db.Model):
@@ -75,6 +100,16 @@ class RegisterAccount(FlaskForm):
     typeofuser = RadioField(label = 'User Type', choices = [(0,'Individual'),(1,'Local Business')])
     submitted = SubmitField(label = 'Submit')
 
+    # def validate_username(self, username):
+    #     user = User.query.filter_by(username=username.data).first()
+    #     if user:
+            # raise ValidationError('That username is taken. Please choose a different one.')
+
+    # def validate_email(self, email):
+    #     user = User.query.filter_by(email=email.data).first()
+    #     if user:
+    #         raise ValidationError('That email is taken. Please choose a different one.')
+
 class LoginAccount(FlaskForm):
     username = StringField(label = 'User Name')
     password = PasswordField(label = 'Password')
@@ -91,11 +126,19 @@ class AddDiscount(FlaskForm):
     submitted = SubmitField(label = 'Submit')
 
 class ForgotForm(FlaskForm):
-    email = EmailField('Email address', [DataRequired(),Email()])
+    email = EmailField('Email address')
     submitted = SubmitField(label = 'Submit')
+    # def validate_email(self, email):
+    #     user = User.query.filter_by(email=email.data).first()
+    #     if user is None:
+    #         raise ValidationError('There is no account with that email. You must register first.')
 
-# class ResetForm(FlaskForm):
-#     current_password = PasswordField('Current Password')
+class ResetForm(FlaskForm):
+    password = PasswordField('Password',validators = [DataRequired()])
+    confirm_password = PasswordField('Confirm Password',
+                                     validators=[DataRequired(), EqualTo('password')])
+    submitted = SubmitField('Reset Password')
+
 # Routes to home page
 @app.route('/')
 def home():
@@ -150,30 +193,48 @@ def logout():
     logout_user()
     return redirect(url_for('account_login'))
 
+# sends reset email with url
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request',
+                  sender='yourId@gmail.com',
+                  recipients=[user.emailAddress])
+    msg.body = f'''Click on the following link to reset your password:
+{url_for('reset_token', token=token, _external=True)}
+# '''
+    mail.send(msg)
+
+# Generates a random url for password reset
+@app.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('home'))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('That is an invalid or expired token', 'warning')
+        return redirect(url_for('reset_request'))
+    form = ResetForm()
+    if request.method == 'POST':
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Your password has been updated! You are now able to log in', 'success')
+        return redirect(url_for('account_login'))
+    return render_template('reset.html', title='Reset Password', form=form)
+
 # Routes to forgot password
 @app.route('/forgot_password', methods = ('GET','POST'))
 def forgot_password():
+    
     form = ForgotForm()
-    if form.validate_on_submit():
-        user = User.objects.filter(email = form.email.data).first()
-        if user:
-            code = str(uuid.uuid4())
-            user.change_configuration = {
-                "password_reset_code" : code
-            }
-            user.save()
+    if request.method == 'POST':
+        user = User.query.filter_by(emailAddress=form.email.data).first()
+        # # # flash(user.emailAddress)
+        send_reset_email(user)
+        flash('An email has been sent with instructions to reset your password.')
+        return redirect(url_for('account_login'))
 
-            body_html= render_template('password_reset.html',user = user)
-            body_text = render_template('password_reset.txt',user = user)
-            mail.send(user.email,"Password reset request", body_html,body_text)
-
-    message = "You will receive a password reset link soon."
-    return render_template('forgot.html',form = form,error = None)
-
-# Routes to reset password
-@app.route('/reset')
-def reset():
-    return render_template('reset.html')
+    return render_template('forgot.html', form = form)
 
 # Routes to ticket page
 @app.route('/tickets', methods = ['GET', 'POST'])
