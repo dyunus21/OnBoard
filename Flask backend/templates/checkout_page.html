@@ -22,7 +22,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{url_for('user_dashboard')}}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{url_for('display_tickets')}}">Explore</a></li>
                     </ul>
                     <form class="d-flex">
                         <button class="btn btn-outline-dark" type="submit" href="checkout_page.html">
@@ -39,7 +39,7 @@
                               <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="static/blank-profile-picture-g02adda42f_640.png" alt="" width="35px" height="35px"></a>
                               <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-size: 15px;">
                                   <!-- <li><a class="dropdown-item" href="#!">Your Username</a></li> -->
-                                  <p style="padding-left: 15px;">usernaem</p>
+                                  <p style="padding-left: 15px;">{{user}}</p>
                                   <li><hr class="dropdown-divider" /></li>
                                   <li><a class="dropdown-item" href="#!">Settings</a></li>
                                   <li><a class="dropdown-item" href="{{url_for('account_login')}}">Log out</a></li>
@@ -101,7 +101,7 @@
                                     </div>
                                   </td>
                                   <td class="align-middle">
-                                    <p class="mb-0" style="font-weight: 500;">${{ticket.Price}}</p>
+                                    <p class="mb-0" style="font-weight: 500;">${{ticket.Price}}0</p>
                                   </td>
                                 </tr>
                                 {% endfor %}
@@ -203,7 +203,7 @@
                             <div class="col-lg-4 col-xl-3">
                               <div class="d-flex justify-content-between" style="font-weight: 500;">
                                 <p class="mb-2">Subtotal</p>
-                                <p class="mb-2">${{sum}}</p>
+                                <p class="mb-2">${{sum}}0</p>
                               </div>
               
                               <div class="d-flex justify-content-between" style="font-weight: 500;">
@@ -215,7 +215,7 @@
               
                               <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
                                 <p class="mb-2">Total (tax included)</p>
-                                <p class="mb-2">$64.99</p>
+                                <p class="mb-2">${{total}}</p>
                               </div>
               
                               <button type="button" class="btn btn-primary btn-block btn-lg">

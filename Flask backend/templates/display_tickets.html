@@ -55,7 +55,7 @@
                             <!--type="submit"> -->
                             <i class="bi-cart-fill me-1"></i>
                             Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">{{count}}</span>
                         </button>
                     </a>
 
@@ -81,7 +81,7 @@
                                     height="35px"></a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-size: 15px;">
                                 <!-- <li><a class="dropdown-item" href="#!">Your Username</a></li> -->
-                                <p style="padding-left: 15px;">Your Username</p>
+                                <p style="padding-left: 15px;">{{user}}</p>
                                 <li>
                                     <hr class="dropdown-divider" />
                                 </li>
@@ -188,10 +188,10 @@
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <form method = "POST">
-                                {{confirm_purchase.hidden_tag()}}
+                                {{confirm_view.hidden_tag()}}
 
-                                <input id = "confirm_purchase" name = "confirm_purchase" type = "hidden" value = "{{ticket.TicketID}}">
-                                {{confirm_purchase.submitted(class = "btn btn-outline-dark mt-auto")}}
+                                <input id = "confirm_view" name = "confirm_view" type = "hidden" value = "{{ticket.TicketID}}">
+                                {{confirm_view.submitted(class = "btn btn-outline-dark mt-auto")}}
                             </form>
                         </div>
                     </div>

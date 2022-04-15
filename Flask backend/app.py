@@ -116,6 +116,9 @@ class LoginAccount(FlaskForm):
     submitted = SubmitField(label = 'Submit')
 
 class addPoints(FlaskForm):
+    submitted = SubmitField(label = 'Confirm Purchase')
+
+class moveToView(FlaskForm):
     submitted = SubmitField(label = 'View Details')
 
 class AddDiscount(FlaskForm):
@@ -145,11 +148,17 @@ def home():
     return render_template('index.html')
 
 curr_points = 0
+curr_username = "Not logged in"
+
+curr_ticket_list = []
+curr_sum = 0
+curr_count = 0
 
 # Routes to account registration page
 @app.route('/accregister', methods = ['GET', 'POST'])
 def account_registration():
     global curr_points
+    global curr_username
     form = RegisterAccount()
     if form.validate_on_submit():
         u_curr = User(username = form.username.data, emailAddress = form.emailadd.data, passwordHash = form.password.data, userType = form.typeofuser.data)
@@ -157,8 +166,9 @@ def account_registration():
             db.session.add(u_curr)
             db.session.commit()
             curr_points = 0
+            curr_username = form.username.data
             if(u_curr.userType==0):
-                return redirect(url_for('purchase_tickets', points = curr_points))
+                return redirect(url_for('display_tickets'))
             else:
                 return redirect(url_for('business_dashboard'))       
         except exc.IntegrityError:
@@ -170,15 +180,19 @@ def account_registration():
 @app.route('/acclogin', methods = ['GET', 'POST'])
 def account_login():
     global curr_points
+    global curr_username
+    global curr_count
     form = LoginAccount()
     if form.validate_on_submit():
         u_attempt = User.query.filter_by(username = form.username.data).first()
-        curr_points = u_attempt.points
          # if username and password is correct
         if u_attempt and form.password.data == u_attempt.passwordHash:
+
+            curr_points = u_attempt.points
+            curr_username = form.username.data
             # login_user(u_attempt)
             if(u_attempt.userType==0):
-                return redirect(url_for('purchase_tickets', points = curr_points))
+                return redirect(url_for('display_tickets'))
             else:
                 return redirect(url_for('business_dashboard'))
         # Error messages
@@ -236,46 +250,63 @@ def forgot_password():
 
     return render_template('forgot.html', form = form)
 
-# Routes to ticket page
-@app.route('/tickets', methods = ['GET', 'POST'])
-def purchase_tickets():
-    global curr_points
-    confirm_purchase = addPoints()
-    if request.method == 'POST':
-        ticket_chosen = request.form.get('confirm_purchase')
-        curr_ticket = Ticket.query.filter_by(TicketID = ticket_chosen).first()
-        if curr_ticket:
-            curr_points += 5
-            curr_ticket.NumberOfPurchasedTickets += 1
-            db.session.commit()
-            tickets = Ticket.query.all()
-            return redirect(url_for('purchase_tickets', tickets = tickets, points = curr_points))
-    tickets = Ticket.query.all()
-    return render_template('purchase_tickets.html', tickets = tickets, points = curr_points, confirm_purchase = confirm_purchase)
+# Routes to old ticket page [DELETE LATER]
+# @app.route('/tickets', methods = ['GET', 'POST'])
+# def purchase_tickets():
+#     global curr_points
+#     confirm_purchase = moveToView()
+#     if request.method == 'POST':
+#         ticket_chosen = request.form.get('confirm_purchase')
+#         curr_ticket = Ticket.query.filter_by(TicketID = ticket_chosen).first()
+#         if curr_ticket:
+#             curr_points += 5
+#             curr_ticket.NumberOfPurchasedTickets += 1
+#             db.session.commit()
+#             tickets = Ticket.query.all()
+#             return redirect(url_for('purchase_tickets', tickets = tickets, points = curr_points))
+#     tickets = Ticket.query.all()
+#     return render_template('purchase_tickets.html', tickets = tickets, points = curr_points, confirm_purchase = confirm_purchase)
 
 
+# Routes to new ticket page
 curr_ticket = ""
 @app.route('/display_tickets', methods = ['GET', 'POST'])
 def display_tickets():
-    global curr_points
-    confirm_purchase = addPoints()
+    global curr_username
+    global curr_count
+    confirm_view = moveToView()
     if request.method == 'POST':
-        ticket_chosen = request.form.get('confirm_purchase')
+        ticket_chosen = request.form.get('confirm_view')
         global curr_ticket 
         curr_ticket= Ticket.query.filter_by(TicketID = ticket_chosen).first()
         if curr_ticket:
-            curr_points += 5
-            curr_ticket.NumberOfPurchasedTickets += 1
-            db.session.commit()
-            tickets = Ticket.query.all()
-            return redirect(url_for('item_view', ticket = curr_ticket))
+            return redirect(url_for('item_view'))
     tickets = Ticket.query.all()
-    return render_template('display_tickets.html', tickets = tickets, confirm_purchase = confirm_purchase)
+    return render_template('display_tickets.html', tickets = tickets, confirm_view = confirm_view, user = curr_username, count = curr_count)
 
-@app.route('/item_view')
+@app.route('/item_view', methods = ['GET', 'POST'])
 def item_view():
-    ticket = curr_ticket
-    return render_template('itemview.html', ticket = ticket)
+    confirm_purchase = addPoints()
+    global curr_username
+    global curr_ticket 
+    global curr_ticket_list
+    global curr_points
+    global curr_sum
+    global curr_count
+
+    if request.method == 'POST':
+        ticket_chosen = request.form.get('confirm_purchase')
+        curr_points += 5
+        curr_ticket.NumberOfPurchasedTickets += 1
+        curr_ticket_list.append(curr_ticket)
+        curr_sum +=curr_ticket.Price
+        curr_sum = round(curr_sum, 2)
+        curr_count+=1
+
+        db.session.commit()
+            
+        return redirect(url_for('checkout'))
+    return render_template('itemview.html', ticket = curr_ticket, confirm_purchase = confirm_purchase, user = curr_username, count = curr_count)
 
 # Routes to user dashboard page
 @app.route('/user_dashboard')
@@ -285,14 +316,15 @@ def user_dashboard():
 # Routes to checkout page
 @app.route('/checkout')
 def checkout():
-    tickets = Ticket.query.all()
-    sum =0
-    count = 0
-    for ticket in tickets:
-        sum +=ticket.Price
-        count+=1
-    # sum = db.session.query(func.max(Ticket.Price).label("max_score"))
-    return render_template('checkout_page.html',tickets = tickets, sum = sum, count = count)
+    global curr_ticket_list
+    global curr_points
+    global curr_username
+    global curr_sum
+    global curr_count
+
+    total = curr_sum + 2.99
+    total = str(round(total, 2))
+    return render_template('checkout_page.html',tickets = curr_ticket_list, sum = curr_sum, count = curr_count, total = total, user = curr_username)
 
 # Routes to local business dashboard
 @app.route('/business_dashboard', methods = ['GET', 'POST'])
