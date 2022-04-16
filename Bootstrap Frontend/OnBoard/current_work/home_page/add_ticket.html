@@ -124,7 +124,7 @@
                                 
                                 <form method="POST" class="my-login-validation" novalidate="">
                                     <div class="form-group" style="width: fit-content;">
-                                        <label for="ticket_name">Ticket Name</label>
+                                        <label for="ticket_name">Ticket Name: </label>
                                         <input id="ticket_name" type="text" class="form-control" name="ticket_name" value="" required autofocus>
                                     </div>
 
@@ -224,6 +224,12 @@
                                         <label for="from_location">From (Starting Location)</label>
                                         <input id="from_location" type="text" class="form-control" name="from_location" value="" required autofocus>
                                     </div> -->
+
+
+                                    <div class="form-group" style="width: fit-content;">
+                                        <label for="ticket_name">Ticket Price: </label>
+                                        <input id="ticket_name" type="text" class="form-control" name="ticket_name" value="" required autofocus>
+                                    </div>
     
                                     <div class="form-group" style="padding-top: 20px;">
                                         <div class="custom-checkbox custom-control">
@@ -235,6 +241,54 @@
                                             Enter Discount Percentage: 
                                             <input id="ticket_name" type="text" class="form-control" name="ticket_name" value="" required autofocus style="width: 60px;">
                                         </div>
+
+                                        
+
+                                        <div class="two-col"style="width: fit-content; padding-top: 20px;">
+                                            <div class="col1">
+                                                <div class="form-group" style="width: fit-content">
+                                                    <label for="date">Start Date: </label>
+                                                    <div class="input-group date" id="datepicker_startdate">
+                                                        <input type="text" class="form-control">
+                                                        <span class="input-group-append">
+                                                            <span class="input-group-text bg-white">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <script type="text/javascript">
+                                                $(function () {
+                                                    $('#datepicker_startdate').datepicker();
+                                                });
+                                            </script>
+
+                                            <div class="col2" style="padding-left: 0px;">
+                                                <div class="form-group" style="width: fit-content;">
+                                                    <label for="date">End Date: </label>
+                                                    <div class="input-group date" id="datepicker_enddate">
+                                                        <input type="text" class="form-control">
+                                                        <span class="input-group-append">
+                                                            <span class="input-group-text bg-white">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <script type="text/javascript">
+                                                $(function () {
+                                                    $('#datepicker_enddate').datepicker();
+                                                });
+                                            </script>
+
+                                        </div>
+    
+                                        
+
                                         <div style="padding-top: 20px; width: fit-content;">
                                             <label for="ticket_name">Enter Discount Code: </label>
                                             <input id="ticket_name" type="text" class="form-control" name="ticket_name" value="" required autofocus>
