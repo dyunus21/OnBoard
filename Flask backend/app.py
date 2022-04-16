@@ -130,7 +130,7 @@ class AddDiscount(FlaskForm):
 
 class ForgotForm(FlaskForm):
     email = EmailField('Email address')
-    submitted = SubmitField(label = 'Submit')
+    submitted = SubmitField(label = 'Send Reset Link')
     # def validate_email(self, email):
     #     user = User.query.filter_by(email=email.data).first()
     #     if user is None:
