@@ -221,16 +221,13 @@ def send_reset_email(user):
 # Generates a random url for password reset
 @app.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('home'))
     user = User.verify_reset_token(token)
     if user is None:
         flash('That is an invalid or expired token', 'warning')
         return redirect(url_for('reset_request'))
     form = ResetForm()
     if request.method == 'POST':
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user.password = hashed_password
+        user.passwordHash = form.password.data
         db.session.commit()
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('account_login'))
