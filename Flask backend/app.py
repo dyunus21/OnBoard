@@ -90,6 +90,7 @@ class Discount(db.Model):
     DiscountID = db.Column(db.Integer(), primary_key = True)
     Business = db.Column(db.String(), nullable = False)
     Amount = db.Column(db.Float(), nullable = False)
+    DiscountCode = db.Column(db.String(), nullable = False)
     ExpirationDate = db.Column(db.String(), nullable = False)
     MinPointsNecessary = db.Column(db.Integer(), nullable = False)
 
@@ -126,6 +127,7 @@ class AddDiscount(FlaskForm):
     amount = FloatField(label = 'Percent Discount')
     expirationdate = StringField(label = 'Date of Expiration')
     minpoints = IntegerField(label = 'Minimum Number of Points Necessary')
+    discountcode = StringField(label = 'Discount Code')
     submitted = SubmitField(label = 'Submit')
 
 class ForgotForm(FlaskForm):
@@ -324,20 +326,26 @@ def checkout():
     return render_template('checkout_page.html',tickets = curr_ticket_list, sum = curr_sum, count = curr_count, total = total, user = curr_username)
 
 # Routes to local business dashboard
-@app.route('/business_dashboard', methods = ['GET', 'POST'])
+@app.route('/business_dashboard')
 def business_dashboard():
+    discounts = Discount.query.all()
+    return render_template('local_businesses_home_page.html', discounts = discounts)
+
+# Routes to discount add form
+@app.route('/add_discount', methods = ['GET', 'POST'])
+def add_discount():
     form = AddDiscount()
     if form.validate_on_submit():
-        d_curr = Discount(Business = form.business.data, Amount = form.amount.data, ExpirationDate = form.expirationdate.data, MinPointsNecessary = form.minpoints.data)
+        d_curr = Discount(Business = form.business.data, Amount = form.amount.data, ExpirationDate = form.expirationdate.data, MinPointsNecessary = form.minpoints.data, DiscountCode = form.discountcode.data)
         db.session.add(d_curr)
         db.session.commit()
-        return redirect(url_for('ad_display'))       
-    return render_template('business_dashboard.html', form = form)
+        return redirect(url_for('business_dashboard'))       
+    return render_template('add_discount.html', form = form)
 
 
-# Routes to ad display page
-@app.route('/ad_display', methods = ['GET', 'POST'])
-def ad_display():
-    discounts = Discount.query.all()
-    return render_template('ad_display.html', discounts = discounts)
+# # Routes to ad display page
+# @app.route('/ad_display', methods = ['GET', 'POST'])
+# def ad_display():
+#     discounts = Discount.query.all()
+#     return render_template('ad_display.html', discounts = discounts)
 
