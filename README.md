@@ -17,7 +17,12 @@ To run the application, run the following commands
 
 ```python
 cd Flask\ Backend/
+
+<!-- RUN APP -->
 flask run
+
+<!-- TEST APP -->
+pytest
 ```
 and then visit http://127.0.0.1:5000/ to view application
 ## Team
