@@ -6,7 +6,7 @@ Booking transportation to and from Urbana-Champaign is cumbersome and confusing;
 
 ## Technical Architecture
 
-![Technical Architecture](relative/path/to/app_architecture.png?raw=true "Technical Architecture")
+![Technical Architecture](app_architecture.png?raw=true "Technical Architecture")
 
 Frontend: Utilized Javascript and Bootstrap CSS library to design and implement interactive pages for our web application.
 
