@@ -2,7 +2,7 @@
 #### By Diya Yunus, Keerthana Nallamotu, Harini Arumugam, and Eesha Ramkumar
 
 ## Summary
-Introduction.....
+Booking transportation to and from Urbana-Champaign is cumbersome and confusing; students may feel overwhelmed by their many options (including Peoria Charter, the Amtrak, Greyhound) and scrolling through each website for time availability and cost appropriate choices can be a tedious task. OnBoard mitigates these challenges by providing a centralized space to book tickets, and creating opportunities for local transportation businesses to further their reach within their communities. 
 
 ## Technical Architecture
 
