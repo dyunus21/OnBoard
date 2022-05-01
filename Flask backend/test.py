@@ -58,12 +58,8 @@ class Tests(unittest.TestCase):
         response = app.get('/forgot_password', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
-    def test_reset(self):
-        response = app.get('/reset', follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
-
     def test_tickets(self):
-        response = app.get('/tickets', follow_redirects=True)
+        response = app.get('/display_tickets', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         
     def test_business_dashboard(self):
