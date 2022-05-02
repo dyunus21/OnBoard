@@ -147,7 +147,7 @@ class ResetForm(FlaskForm):
 # Routes to home page
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return redirect(url_for('account_login')) 
 
 curr_points = 0
 curr_username = "Not logged in"
